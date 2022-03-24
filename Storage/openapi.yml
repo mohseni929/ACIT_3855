@@ -1,0 +1,180 @@
+openapi: 3.0.0
+info:
+  description: This API recieves the schedule of referees
+  version: "1.0.0"
+  title: Referee_schedule API
+  contact:
+    email: mohseni929@gmail.com
+tags:
+  - name: Scheduler
+    description: schedules the games based on availiability or manually scheduled
+paths:
+  /availability/schedule:
+    get:
+      tags:
+        - Scheduler
+      summary: searches classification
+      operationId: app.searchClassification
+      description: 
+        Search for referee's classification
+      parameters:
+        - name: timestamp 
+          in: query 
+          description: Limits the number of items on a page 
+          schema: 
+            type: string 
+            format: date-time 
+            example: "2022-02-02 20:41:17.979133"
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Scheduler'
+        '400':
+          description: bad input parameter
+
+  /availability/game:
+    get:
+        tags:
+          - Scheduler
+        summary: searches for number of fans
+        operationId: app.searchFans
+        description: 
+          Search for number of fans attending game
+        parameters:
+          - name: timestamp 
+            in: query 
+            description: Search for a specific time 
+            schema: 
+              type: string 
+              format: date-time 
+              example: "2022-02-02 20:41:17.979133"
+        responses:
+          '200':
+            description: search results matching criteria
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Game'
+          '400':
+            description: bad input parameter
+
+  /availability/referee:
+    get:
+        tags:
+          - Scheduler
+        summary: searches experience
+        operationId: app.searchExperience
+        description: 
+          Search for referee years of experience
+        parameters:
+          - name: timestamp 
+            in: query 
+            description: Limits the number of items on a page
+            schema: 
+              type: string 
+              format: date-time 
+              example: "2022-02-02 20:41:17.979133"
+        responses:
+          '200':
+            description: search results matching criteria
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Referee'
+          '400':
+            description: bad input parameter
+
+components:
+  schemas:
+    Scheduler:
+      required:
+        - Game_id
+        - Location
+        - Teams
+        - Classification
+        - Referee_team
+      properties:
+        Game_id:
+          type: string
+          format: aggn
+          example: U18-B01-23456-010
+        Classification:
+          type: integer
+          example: 12
+        Location:
+          type: string
+          example: ambelsideE
+        Teams:
+          type: string
+          example: team123
+        Referee_team:
+          type: string
+          example: Afred P
+      type: object
+    Game:
+      required:
+        - Time
+        - Stadium
+        - Number_of_referees
+        - Level
+        - Capacity
+      properties:
+        Time:
+          type: string
+          format: D-M-Y H:S
+          example: 25/01/2021 18:00
+        Stadium:
+          type: string
+          example: Wembley
+        Number_of_referees:
+          type: integer
+          example: 3
+        Level:
+          type: string
+          example: gold
+        Capacity:
+          type: integer
+          example: 100
+      type: object  
+    Referee:
+      required:
+        - Referee_ID
+        - Name
+        - Age
+        - Classification
+        - Address
+        - Phone_Number
+        - Experience
+      properties:
+        Referee_ID:
+          type: string
+          format: lna
+          example: yi-0235-45
+        Name:
+          type: string
+          example: 'alex smith'
+        Age:
+          type: integer
+          example: 45
+        Classification:
+          type: integer
+          example: 11
+        Address:
+          type: string
+          example: 9-867 bute st vancouver
+        Phone_Number:
+          type: string
+          example: 645-985-4789
+        Experience:
+          type: integer
+          example: 1
+      type: object

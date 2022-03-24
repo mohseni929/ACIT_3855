@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+  description: This API receives reading events from mobile applications.
+  version: "1.0.0"
+  title: Scheduling API
+  contact:
+    email: mohseni929@gmail.com
+tags:
+  - name: Scheduler
+    description: Operations available to system users.
+paths: 
+  /stats: 
+    get: 
+      summary: Gets the event stats 
+      operationId: app.get_stats 
+      description: Gets stats of availability
+      responses: 
+        '200': 
+          description: Successfully returned a list of availability 
+          content: 
+            application/json: 
+              schema: 
+                type: object 
+                items: 
+                  $ref: '#/components/schemas/ReadingStats' 
+        '400': 
+          description: Invalid request 
+          content: 
+            application/json: 
+              schema: 
+                type: object 
+                properties: 
+                  message: 
+                    type: string 
+ 
+components: 
+  schemas: 
+    ReadingStats: 
+      required: 
+      - num_of_referees 
+      - num_of_experience 
+      - num_of_fans
+      - num_of_fields 
+      - num_of_class 
+      properties: 
+        num_of_referees: 
+          type: integer 
+          example: 20
+        num_of_experience: 
+          type: integer 
+          example: 40
+        num_of_fans: 
+          type: integer 
+          example: 30 
+        num_of_fields: 
+          type: integer 
+          example: 35
+        num_of_class: 
+          type: integer 
+          example: 50
+      type: object

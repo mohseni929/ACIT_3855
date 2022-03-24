@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  description: This API recieves the schedule of referees
+  version: "1.0.0"
+  title: Referee_schedule API
+  contact:
+    email: mohseni929@gmail.com
+tags:
+  - name: Scheduler
+    description: schedules the games based on availiability or manually scheduled
+paths:
+  /availability/schedule:
+    post:
+      tags:
+        - Scheduler
+      summary: Reports available games
+      operationId: app.available_games
+      description: Adds games that need referees scheduled
+      responses: 
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Scheduler'
+        description: open games needing referees
+  /availability/game:
+    post:
+      tags:
+        - Scheduler
+      summary: Games
+      operationId: app.games
+      description: Adds games description 
+      responses: 
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Game'
+        description: game description
+  /availability/referee:
+    post:
+      tags:
+        - Scheduler
+      summary: Referees availiability
+      operationId: app.referee_available
+      description: Referee available and able to officiate a game
+      responses: 
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Referee'
+        description: referee able to officiate game
+components:
+  schemas:
+    Scheduler:
+      required:
+        - Game_id
+        - Location
+        - Teams
+        - Classification
+        - Referee_team
+      properties:
+        Game_id:
+          type: string
+          format: aggn
+          example: U18-B01-23456-010
+        Classification:
+          type: integer
+          example: 12
+        Location:
+          type: string
+          example: ambelsideE
+        Teams:
+          type: string
+          example: team123
+        Referee_team:
+          type: string
+          example: Afred P
+      type: object
+    Game:
+      required:
+        - Time
+        - Stadium
+        - Number_of_referees
+        - Level
+        - Capacity
+      properties:
+        Time:
+          type: string
+          format: D-M-Y H:S
+          example: 25/01/2021 18:00
+        Stadium:
+          type: string
+          example: Wembley
+        Number_of_referees:
+          type: integer
+          example: 3
+        Level:
+          type: string
+          example: gold
+        Capacity:
+          type: integer
+          example: 100
+      type: object  
+    Referee:
+      required:
+        - Referee_ID
+        - Name
+        - Age
+        - Classification
+        - Address
+        - Phone_Number
+        - Experience
+      properties:
+        Referee_ID:
+          type: string
+          format: lna
+          example: yi-0235-45
+        Name:
+          type: string
+          example: 'alex smith'
+        Age:
+          type: integer
+          example: 45
+        Classification:
+          type: integer
+          example: 11
+        Address:
+          type: string
+          example: 9-867 bute st vancouver
+        Phone_Number:
+          type: string
+          example: 645-985-4789
+        Experience:
+          type: integer
+          example: 1
+      type: object

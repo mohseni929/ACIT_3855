@@ -1,0 +1,106 @@
+---
+openapi: 3.0.0
+info:
+  title: Referee_schedule API
+  description: This API recieves the schedule of referees
+  contact:
+    email: mohseni929@gmail.com
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: Scheduler
+  description: schedules the games based on availiability or manually scheduled
+paths:
+  /availability/schedule:
+    post:
+      tags:
+      - Scheduler
+      summary: Reports available games
+      description: Adds games that need referees scheduled
+      operationId: app.available_games
+      requestBody:
+        description: open games needing referees
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Scheduler'
+      responses:
+        "201":
+          description: item created
+        "400":
+          description: invalid input, object invalid
+  /availability/referee:
+    post:
+      tags:
+      - Scheduler
+      summary: Referees availiability
+      description: Referee available and able to officiate a game
+      operationId: app.referee_available
+      requestBody:
+        description: referee able to officiate game
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Referee'
+      responses:
+        "201":
+          description: item created
+        "400":
+          description: invalid input, object invalid
+components:
+  schemas:
+    Scheduler:
+      required:
+      - Classification
+      - Game id
+      - Location
+      - Referee team
+      - Teams
+      type: object
+      properties:
+        Game id:
+          type: string
+          format: aggn
+          example: U18-B01-23456-010
+        Classification of game:
+          type: integer
+          example: 12
+        Location:
+          type: string
+          example: ambelsideE
+        Teams:
+          type: string
+          example: team123
+        Referee teams:
+          type: string
+          example: Afred P
+    Referee:
+      required:
+      - Address
+      - Age
+      - Classification
+      - Name
+      - Phone Number
+      - Referee ID
+      type: object
+      properties:
+        Referee ID:
+          type: string
+          format: lna
+          example: yi-0235-45
+        Name:
+          type: string
+          example: alex smith
+        Age:
+          type: integer
+          example: 45
+        Classification:
+          type: integer
+          example: 11
+        Address:
+          type: string
+          example: 9-867 bute st vancouver
+        Phone Number:
+          type: integer
+          example: 6459854789

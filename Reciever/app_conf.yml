@@ -1,0 +1,11 @@
+version: 1 
+eventstore1: 
+  url: http://localhost:8090/availability/schedule
+eventstore2: 
+  url: http://localhost:8090/availability/game
+eventstore3: 
+  url: http://localhost:8090/availability/referee
+events: 
+  hostname: acit3855lab.westus.cloudapp.azure.com
+  port: 9092 
+  topic: events
