@@ -43,9 +43,9 @@ with open('app_conf.yml', 'r') as f:
     scheduler = app_config['eventstore1']['url']
     game = app_config['eventstore2']['url']
     referee = app_config['eventstore3']['url']
-    client = KafkaClient(hosts='acit3855lab.westus.cloudapp.azure.com:9092') 
-    topic = client.topics[str.encode(app_config['events']['topic'])] 
-    producer = topic.get_sync_producer()
+    # client = KafkaClient(hosts='acit3855lab.westus.cloudapp.azure.com:9092') 
+    # topic = client.topics[str.encode(app_config['events']['topic'])] 
+    # producer = topic.get_sync_producer()
 
 with open('log_conf.yml', 'r') as f: 
     log_config = yaml.safe_load(f.read()) 
@@ -61,6 +61,9 @@ def available_games(body):
     # status_code = send (scheduler, json.dumps(body), headers=header)
     # logger.info(f"Returned event status response id: {trace_id} with status {status_code}")
     #requests.post(scheduler, json=body, headers={"Content-Type": "application/json"})
+    client = KafkaClient(hosts='acit3855lab.westus.cloudapp.azure.com:9092') 
+    topic = client.topics[str.encode(app_config['events']['topic'])] 
+    producer = topic.get_sync_producer()
     msg = { "type": "available_games",  
         "datetime" :    
            datetime.datetime.now().strftime( 
@@ -78,6 +81,9 @@ def games(body):
     # status_code = send (game, json.dumps(body), headers=header)
     # logger.info(f"Returned event status response id: {trace_id} with status {status_code}")
     #requests.post(game, json=body, headers={"Content-Type": "application/json"})
+    client = KafkaClient(hosts='acit3855lab.westus.cloudapp.azure.com:9092') 
+    topic = client.topics[str.encode(app_config['events']['topic'])] 
+    producer = topic.get_sync_producer()
     msg = { "type": "games",  
         "datetime" :    
            datetime.datetime.now().strftime( 
@@ -95,6 +101,9 @@ def referee_available(body):
     # status_code = send (referee, json.dumps(body), headers=header)
     # logger.info(f"Returned event status response id: {trace_id} with status {status_code}")
     #requests.post(referee, json=body, headers={"Content-Type": "application/json"})
+    client = KafkaClient(hosts='acit3855lab.westus.cloudapp.azure.com:9092') 
+    topic = client.topics[str.encode(app_config['events']['topic'])] 
+    producer = topic.get_sync_producer()
     msg = { "type": "referee_available",  
         "datetime" :    
            datetime.datetime.now().strftime( 
