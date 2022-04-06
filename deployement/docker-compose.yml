@@ -43,8 +43,8 @@ services:
       # Where our data will be persisted 
     volumes:
       - my-db:/var/lib/mysql
-  receiver:
-    build: ../Receiver
+  reciever:
+    build: ../Reciever
     depends_on:
       - kafka
     ports:
@@ -66,7 +66,7 @@ services:
     volumes:
       - my-db:/var/lib/sqlite
   audit_log:
-    build: ../Audit
+    build: ../audit_log
     ports:
       - "8110:8110"
     depends_on:
