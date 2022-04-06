@@ -53,15 +53,12 @@ services:
     build: ../Storage
     ports:
       - "8090:8090"
-    expose:
-      - 8090
     depends_on:
       - db
       - kafka
   processing:
     build: ../Processing
-    ports: 
-      - "8100:8100"
+    network_mode: "host"
     depends_on:
       - storage
     volumes:
