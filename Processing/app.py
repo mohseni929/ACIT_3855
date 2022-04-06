@@ -42,7 +42,7 @@ def get_stats():
         results = readings.to_dict()
     except:
         logger.error("Statistics do not exist.")
-        results = {}
+        results = {'num_of_referees': 0, 'num_of_experience': 0, 'num_of_fans': 0, 'num_of_fields': 0, 'num_of_class': 0, 'last_updated': '0001-01-01 01:01:01'}
 
     session.close()
 
@@ -60,12 +60,12 @@ def populate_stats():
     try:
         readings = session.query(Stats).order_by(Stats.last_updated.desc()).first()
 
-        results = readings.last_updated
+        results = readings.to_dict()
 
         # for reading in readings: 
         #     results.append(reading.to_dict()) 
     except:
-        results = [{'num_of_referees': 0, 'num_of_experience': 0, 'num_of_fans': 0, 'num_of_fields': 0, 'num_of_class': 0, 'last_updated': '0001-01-01 01:01:01'}]
+        results = {'num_of_referees': 0, 'num_of_experience': 0, 'num_of_fans': 0, 'num_of_fields': 0, 'num_of_class': 0, 'last_updated': '0001-01-01 01:01:01'}
     
     
     response1 = requests.get(f"{app_config['eventstore']['url']}/availability/schedule",params={'timestamp': results[0]['last_updated']})
@@ -89,10 +89,10 @@ def populate_stats():
 
 
         total_fields = len(exp)
-        total_referees = sum([x['Number_of_referees'] for x in refs]) + int(readings.num_of_referees)
-        total_exp = sum([x['Experience'] for x in exp]) + int(readings.num_of_experience)
-        total_capacity = sum([x['Capacity'] for x in refs]) + int(readings.num_of_fans)
-        total_class = sum([x['Classification'] for x in classes]) + int(readings.num_of_class)
+        total_referees = sum([x['Number_of_referees'] for x in refs]) + int(results.num_of_referees)
+        total_exp = sum([x['Experience'] for x in exp]) + int(results.num_of_experience)
+        total_capacity = sum([x['Capacity'] for x in refs]) + int(results.num_of_fans)
+        total_class = sum([x['Classification'] for x in classes]) + int(results.num_of_class)
 
         logger.debug(f"Total number of fields and games: {total_fields}. TraceID: {trace_id}")
         logger.debug(f"Total number of referees {total_referees}. TraceID: {trace_id}")
