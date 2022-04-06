@@ -74,9 +74,7 @@ services:
   dashboard-ui:
     build: ../dashboard-UI
     ports:
-      - "3000"
-    networks:
-      - "api.network"
+      - "3000:3000"
     depends_on:
       - "processing"
       - "audit_log"
