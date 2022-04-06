@@ -67,7 +67,6 @@ def populate_stats():
     except:
         results = [{'num_of_referees': 0, 'num_of_experience': 0, 'num_of_fans': 0, 'num_of_fields': 0, 'num_of_class': 0, 'last_updated': '0001-01-01 01:01:01'}]
     
-    print(f'\n\nAAAAAAAAAAAAAAAAAAA\n\n')
     
     response1 = requests.get("http://acit3855lab.westus.cloudapp.azure.com:8090/availability/schedule",params={'timestamp': results[0]['last_updated']})
     response2 = requests.get("http://acit3855lab.westus.cloudapp.azure.com:8090/availability/game",params={'timestamp': results[0]['last_updated']})

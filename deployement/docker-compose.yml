@@ -60,6 +60,7 @@ services:
       - kafka
   processing:
     build: ../Processing
+    ports: "8100:8100"
     depends_on:
       - storage
     network_mode: host
