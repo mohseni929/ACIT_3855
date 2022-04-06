@@ -7,8 +7,9 @@ export default function EndpointAudit(props) {
     const [error, setError] = useState(null)
 	const rand_val = Math.floor(Math.random() * 100); // Get a random event from the event store
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const getAudit = () => {
-        fetch(`http://<Cloud DNS>:8110/${props.endpoint}?index=${rand_val}`)
+        fetch(`http://acit3855lab.westus.cloudapp.azure.com/audit_log/${props.endpoint}?index=${rand_val}`)
             .then(res => res.json())
             .then((result)=>{
 				console.log("Received Audit Results for " + props.endpoint)

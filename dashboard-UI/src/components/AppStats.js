@@ -6,9 +6,10 @@ export default function AppStats() {
     const [stats, setStats] = useState({});
     const [error, setError] = useState(null)
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const getStats = () => {
 	
-        fetch(`http://<Cloud DNS>:8100/stats`)
+        fetch(`http://acit3855lab.westus.cloudapp.azure.com/processing/stats`)
             .then(res => res.json())
             .then((result)=>{
 				console.log("Received Stats")
@@ -35,21 +36,21 @@ export default function AppStats() {
                 <table className={"StatsTable"}>
 					<tbody>
 						<tr>
-							<th>Blood Pressure</th>
-							<th>Heart Rate</th>
+							<th>Referees</th>
+							<th>Years of experience</th>
 						</tr>
 						<tr>
-							<td># BP: {stats['num_bp_readings']}</td>
-							<td># HR: {stats['num_hr_readings']}</td>
+							<td># Referees: {stats['num_of_referees']}</td>
+							<td># Number of experience: {stats['num_of_experience']}</td>
 						</tr>
 						<tr>
-							<td colspan="2">Max BP Systolic: {stats['max_bp_sys_reading']}</td>
+							<td colspan="2">Number of fans: {stats['num_of_fans']}</td>
 						</tr>
 						<tr>
-							<td colspan="2">Max BR Diastolic: {stats['max_bp_dia_reading']}</td>
+							<td colspan="2">Number of fields: {stats['num_of_fields']}</td>
 						</tr>
 						<tr>
-							<td colspan="2">Max HR: {stats['max_bp_sys_reading']}</td>
+							<td colspan="2">referee classification: {stats['num_of_class']}</td>
 						</tr>
 					</tbody>
                 </table>
