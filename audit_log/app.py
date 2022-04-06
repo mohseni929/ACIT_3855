@@ -11,6 +11,7 @@ from pykafka.common import OffsetType
 from threading import Thread
 import json
 from base import Base
+from flask_cors import CORS, cross_origin
 
 with open('log_conf.yml', 'r') as f:
     log_config = yaml.safe_load(f.read())
@@ -106,6 +107,8 @@ def searchExperience(index):
     return { "message": "Not Found"}, 404
 
 app = connexion.FlaskApp(__name__, specification_dir='./')
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
 app.add_api("openapi.yaml", strict_validation=True, validate_responses=True)
 
 if __name__ == "__main__":

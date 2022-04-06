@@ -6,6 +6,7 @@ import logging.config
 from apscheduler.schedulers.background import BackgroundScheduler
 from base import Base
 from sqlalchemy import create_engine
+from flask_cors import CORS, cross_origin
 from sqlalchemy.orm import sessionmaker
 from stats import Stats
 from datetime import datetime
@@ -124,6 +125,8 @@ def init_scheduler():
     sched.start()
 
 app = connexion.FlaskApp(__name__, specification_dir='Swagger/')
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
 app.add_api(yaml_file, strict_validation=True, validate_responses=True)
 
 if __name__ == "__main__":
