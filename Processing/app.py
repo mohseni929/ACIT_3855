@@ -1,9 +1,6 @@
 from logging.handlers import BufferingHandler
-import re
 import connexion
 import requests
-import sqlalchemy
-import swagger_ui_bundle
 import yaml
 import logging.config
 from apscheduler.schedulers.background import BackgroundScheduler

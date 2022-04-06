@@ -4,7 +4,6 @@ from connexion import NoContent
 import json
 from datetime import datetime
 import os
-from matplotlib.font_manager import json_dump
 import requests
 import yaml
 import logging.config

@@ -36,7 +36,7 @@ services:
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
       # <Port exposed> : < MySQL Port running inside container> 
-      - '3306:3306'
+      - '3307:3306'
     expose:
       # Opens port 3306 on the container 
       - '3306'
@@ -44,13 +44,13 @@ services:
     volumes:
       - my-db:/var/lib/mysql
   receiver:
-    build: ../receiver
+    build: ../Receiver
     depends_on:
       - kafka
     ports:
       - "8080:8080"
   storage:
-    build: ../storage
+    build: ../Storage
     ports:
       - "8090:8090"
     expose:
@@ -59,18 +59,18 @@ services:
       - db
       - kafka
   processing:
-    build: ../processing
+    build: ../Processing
     depends_on:
       - storage
     network_mode: host
     volumes:
       - my-db:/var/lib/sqlite
   audit_log:
-    build: ../audit_log
+    build: ../Audit
     ports:
       - "8110:8110"
     depends_on:
       - kafka
-# Names our volume 
+#Names our volume 
 volumes:
   my-db:
