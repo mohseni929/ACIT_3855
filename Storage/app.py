@@ -14,6 +14,7 @@ from pykafka import KafkaClient
 import json
 from pykafka.common import OffsetType
 from threading import Thread
+from sqlalchemy import and_
 
 
 with open('app_conf.yml', 'r') as f:
@@ -36,31 +37,16 @@ Base.metadata.bind = DB_ENGINE
 DB_SESSION = sessionmaker(bind=DB_ENGINE)
 
 
-# def available_games(body):
-#     """ Receives a blood pressure reading """
 
-#     session = DB_SESSION()
 
-#     ag = AvailableGames(body['Game_id'],
-#                        body['Location'],
-#                        body['Teams'],
-#                        body['Classification'],
-#                        body['Referee_team'],
-#                        body['trace_id'])
-
-#     session.add(ag)
-
-#     session.commit()
-#     session.close()
-
-#     return NoContent, 201
-
-def searchClassification(timestamp):
+def searchClassification(start_timestamp, end_timestamp):
     session = DB_SESSION()
 
-    timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+    # timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
    
-    readings = session.query(AvailableGames).filter(AvailableGames.date_created >= timestamp_datetime)
+    readings = session.query(AvailableGames).filter(
+        and_(AvailableGames.date_created >= start_timestamp,
+             AvailableGames.date_created < end_timestamp))
  
     results_list = [] 
  
@@ -69,39 +55,21 @@ def searchClassification(timestamp):
  
     session.close() 
      
-    logger.info("Query for referee classification after %s returns %d results" % (timestamp, len(results_list))) 
+    logger.info("Query for referee classification after %s returns %d results" % (start_timestamp, end_timestamp, len(results_list))) 
     
-    logger.info(f"Connecting to DB. Hostname:{hostname}, Port:{port}")
+    # logger.info(f"Connecting to DB. Hostname:{hostname}, Port:{port}")
     return results_list, 200
 
 
-# def games(body):
-#     """ Receives a heart rate (pulse) reading """
 
-#     session = DB_SESSION()
-
-#     ga = Games(body['Time'],
-#                    body['Stadium'],
-#                    body['Number_of_referees'],
-#                    body['Level'],
-#                    body['Capacity'],
-#                    body['trace_id'])
-
-#     session.add(ga)
-
-#     session.commit()
-#     session.close()
-
-#     return NoContent, 201
-
-#     return NoContent, 200
-
-def searchFans(timestamp):
+def searchFans(start_timestamp, end_timestamp):
     session = DB_SESSION()
 
-    timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+    # timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
    
-    readings = session.query(Games).filter(Games.date_created >= timestamp_datetime)
+    readings = session.query(Games).filter(
+        and_(Games.date_created >= start_timestamp,
+             Games.date_created < end_timestamp))
  
     results_list = [] 
  
@@ -110,40 +78,20 @@ def searchFans(timestamp):
  
     session.close() 
      
-    logger.info("Query for number of fans after %s returns %d results" % (timestamp, len(results_list))) 
+    logger.info("Query for number of fans after %s returns %d results" % (start_timestamp, end_timestamp, len(results_list))) 
     
-    logger.info(f"Connecting to DB. Hostname:{hostname}, Port:{port}")
+    # logger.info(f"Connecting to DB. Hostname:{hostname}, Port:{port}")
     return results_list, 200
 
-# def referee_available(body):
-#     """ Receives a heart rate (pulse) reading """
 
-#     session = DB_SESSION()
-
-#     ra = RefereeAvailable(body['Referee_ID'],
-#                    body['Name'],
-#                    body['Age'],
-#                    body['Classification'],
-#                    body['Address'],
-#                    body['Phone_Number'],
-#                    body['Experience'],
-#                    body['trace_id'])
-
-#     session.add(ra)
-
-#     session.commit()
-#     session.close()
-
-#     return NoContent, 201
-
-#     return NoContent, 200
-
-def searchExperience(timestamp):
+def searchExperience(start_timestamp, end_timestamp):
     session = DB_SESSION()
 
-    timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+    # timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
    
-    readings = session.query(RefereeAvailable).filter(RefereeAvailable.date_created >= timestamp_datetime)
+    readings = session.query(RefereeAvailable).filter(
+        and_(RefereeAvailable.date_created >= start_timestamp,
+             RefereeAvailable.date_created < end_timestamp))
  
     results_list = [] 
  
@@ -152,9 +100,9 @@ def searchExperience(timestamp):
  
     session.close() 
      
-    logger.info("Query for referee's experience level after %s returns %d results" % (timestamp, len(results_list))) 
+    logger.info("Query for referee's experience level after %s returns %d results" % (start_timestamp, end_timestamp, len(results_list))) 
     
-    logger.info(f"Connecting to DB. Hostname:{hostname}, Port:{port}")
+    # logger.info(f"Connecting to DB. Hostname:{hostname}, Port:{port}")
     return results_list, 200
 
 
