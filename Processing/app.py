@@ -26,8 +26,7 @@ with open('log_conf.yml', 'r') as f:
     logging.config.dictConfig(log_config) 
 logger = logging.getLogger('basicLogger')
 
-DB_ENGINE = create_engine("sqlite:///%s" % 
-app_config["datastore"]["filename"]) 
+DB_ENGINE = create_engine("sqlite:///%s" % app_config["datastore"]["filename"]) 
 Base.metadata.bind = DB_ENGINE 
 DB_SESSION = sessionmaker(bind=DB_ENGINE)
 
