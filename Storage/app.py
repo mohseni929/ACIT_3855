@@ -15,6 +15,7 @@ import json
 from pykafka.common import OffsetType
 from threading import Thread
 from sqlalchemy import and_
+import time
 
 
 with open('app_conf.yml', 'r') as f:
@@ -29,10 +30,29 @@ with open('log_conf.yml', 'r') as f:
     log_config = yaml.safe_load(f.read()) 
     logging.config.dictConfig(log_config)
     logger = logging.getLogger('basicLogger')
+    
+host_name = "%s:%d" % (app_conf["events"]["hostname"], app_conf["events"]["port"])
+max_retry = app_conf["events"]["retry"]
+retry = 0
+while retry < max_retry:
+    logger.info(f"Try to connect Kafka Server, this is number {retry} try")
+    try:
+        client = KafkaClient(hosts=host_name)
+        topic = client.topics[str.encode(app_conf["events"]["topic"])]
+        logger.info("Successfully connect to Kafka")
+        consumer = topic.get_simple_consumer(consumer_group=b'event_group', reset_offset_on_start=False,
+                                            auto_offset_reset=OffsetType.LATEST)
+        break
+    except:
+        logger.error(f"Failed to connect to Kafka, this is number {retry} try")
+        time.sleep(app_conf["events"]["sleep"])
+        retry += 1
+        logger.info("retry in 10 second")
 
 
 
 DB_ENGINE = create_engine(f'mysql+pymysql://{user}:{password}@{hostname}:{port}/{db}')
+logger.info(f"Connecting to DB. Hostname:{hostname}, Port:{port}")
 Base.metadata.bind = DB_ENGINE
 DB_SESSION = sessionmaker(bind=DB_ENGINE)
 
@@ -125,44 +145,34 @@ def process_messages():
         msg_str = msg.value.decode('utf-8') 
         msg = json.loads(msg_str) 
         logger.info("Message: %s" % msg) 
- 
         payload = msg["payload"] 
+        
+        session = DB_SESSION()
+        data = {}
  
         if msg["type"] == "available_games": # Change this to your event ty
-            session = DB_SESSION()
 
-            ag = AvailableGames(payload['Game_id'],
+            data = AvailableGames(payload['Game_id'],
                             payload['Location'],
                             payload['Teams'],
                             payload['Classification'],
                             payload['Referee_team'],
                             payload['trace_id'])
 
-            session.add(ag)
 
-            session.commit()
-            session.close()
-
-            
         elif msg["type"] == "games":
-            session = DB_SESSION()
 
-            ga = Games(payload['Time'],
+            data = Games(payload['Time'],
                         payload['Stadium'],
                         payload['Number_of_referees'],
                         payload['Level'],
                         payload['Capacity'],
                         payload['trace_id'])
 
-            session.add(ga)
-
-            session.commit()
-            session.close()
             
         elif msg["type"] == "referee_available": # Change this to your event type  
-            session = DB_SESSION()
 
-            ra = RefereeAvailable(payload['Referee_ID'],
+            data = RefereeAvailable(payload['Referee_ID'],
                         payload['Name'],
                         payload['Age'],
                         payload['Classification'],
@@ -171,11 +181,12 @@ def process_messages():
                         payload['Experience'],
                         payload['trace_id'])
 
-            session.add(ra)
-
-            session.commit()
-            session.close()
+        session.add(data)
+        session.commit()
+        session.close()
+        logger.debug(f'Stored event {msg["type"]} request with a trace id of {payload["trace_id"]}')
         consumer.commit_offsets()
+        
 app = connexion.FlaskApp(__name__, specification_dir='')
 app.add_api("openapi.yml", strict_validation=True, validate_responses=True)
 

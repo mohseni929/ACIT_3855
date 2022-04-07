@@ -10,33 +10,12 @@ import logging.config
 import datetime
 from pykafka import KafkaClient
 from uuid import uuid1 
+import time
 
 #send = requests.post
 header = {'Content-Type': 'application/json'}
 
 
-def write_request_json(req_str):
-    """add a attributes to json"""
-    if os.path.isfile("events.json"): 
-        with open("events.json" , "r+") as file:
-            file_content = json.load(file)      # loads content as json to file
-    else: 
-        file_content = []
-
-    new_object = {
-        "received_timestamp": str(datetime.now()),
-        "request_data": ["%s is %s" % (keys, req_str[keys]) for keys in req_str]
-    }                                           # adds the timestamp and request into variable
-    
-    file_content.append(new_object)             # add the timestamp and request to json
-
-    if len(file_content)> 10:                   # oldest requests after 10th gets removed
-        file_content = file_content[1:]
-    
-    with open("events.json", "w+") as outfile:
-        json_object = json.dumps(file_content, indent = 4)
-        outfile.write(json_object)
-    return
 
 with open('app_conf.yml', 'r') as f: 
     app_config = yaml.safe_load(f.read())
@@ -52,17 +31,28 @@ with open('log_conf.yml', 'r') as f:
     logging.config.dictConfig(log_config) 
     logger = logging.getLogger('basicLogger')
     logger.info("Test")
+    
+host_name = "%s:%d" % (app_config["events"]["hostname"], app_config["events"]["port"])
+max_retry = app_config["events"]["retry"]
+retry = 0
+while retry < max_retry:
+    logger.info(f"Try to connect Kafka Server, this is number {retry} try")
+    try:
+        client = KafkaClient(hosts=host_name)
+        topic = client.topics[str.encode(app_config["events"]["topic"])]
+        logger.info(f"Successfully connected to Kafka Server")
+        break
+    except:
+        logger.error(f"Failed to connect to Kafka, this is number {retry} try")
+        time.sleep(app_config["events"]["sleep"])
+        retry += 1
+        logger.info("retry in 10 second")
 
 def available_games(body):
     """add a new available game """
     trace_id = str(uuid1())
     logger.info(f"Recieved event status with a trace id of {trace_id}")
     body["trace_id"] = trace_id
-    # status_code = send (scheduler, json.dumps(body), headers=header)
-    # logger.info(f"Returned event status response id: {trace_id} with status {status_code}")
-    #requests.post(scheduler, json=body, headers={"Content-Type": "application/json"})
-    client = KafkaClient(hosts='acit3855lab.westus.cloudapp.azure.com:9092') 
-    topic = client.topics[str.encode(app_config['events']['topic'])] 
     producer = topic.get_sync_producer()
     msg = { "type": "available_games",  
         "datetime" :    
@@ -78,11 +68,6 @@ def games(body):
     trace_id = str(uuid1())
     logger.info(f"Recieved event status with a trace id of {trace_id}")
     body["trace_id"] = trace_id
-    # status_code = send (game, json.dumps(body), headers=header)
-    # logger.info(f"Returned event status response id: {trace_id} with status {status_code}")
-    #requests.post(game, json=body, headers={"Content-Type": "application/json"})
-    client = KafkaClient(hosts='acit3855lab.westus.cloudapp.azure.com:9092') 
-    topic = client.topics[str.encode(app_config['events']['topic'])] 
     producer = topic.get_sync_producer()
     msg = { "type": "games",  
         "datetime" :    
@@ -98,11 +83,6 @@ def referee_available(body):
     trace_id = str(uuid1())
     logger.info(f"Recieved event status with a trace id of {trace_id}")
     body["trace_id"] = trace_id
-    # status_code = send (referee, json.dumps(body), headers=header)
-    # logger.info(f"Returned event status response id: {trace_id} with status {status_code}")
-    #requests.post(referee, json=body, headers={"Content-Type": "application/json"})
-    client = KafkaClient(hosts='acit3855lab.westus.cloudapp.azure.com:9092') 
-    topic = client.topics[str.encode(app_config['events']['topic'])] 
     producer = topic.get_sync_producer()
     msg = { "type": "referee_available",  
         "datetime" :    
