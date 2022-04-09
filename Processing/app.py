@@ -86,12 +86,15 @@ def populate_stats():
 
         trace_id = str(uuid1())
 
+        print(classes)
+        print(refs)
+        print(exp)
 
         total_fields = len(exp)
-        total_referees = sum([x['Number_of_referees'] for x in refs]) + int(results[0]["num_of_referees"])
-        total_exp = sum([x['Experience'] for x in exp]) + int(results[0]["num_of_experience"])
-        total_capacity = sum([x['Capacity'] for x in refs]) + int(results[0]["num_of_fans"])
-        total_class = sum([x['Classification'] for x in classes]) + int(results[0]["num_of_class"])
+        total_referees = sum([x['Number_of_referees'] for x in refs]) + int(results["num_of_referees"])
+        total_exp = sum([x['Experience'] for x in exp]) + int(results["num_of_experience"])
+        total_capacity = sum([x['Capacity'] for x in refs]) + int(results["num_of_fans"])
+        total_class = sum([x['Classification'] for x in classes]) + int(results["num_of_class"])
 
         logger.debug(f"Total number of fields and games: {total_fields}. TraceID: {trace_id}")
         logger.debug(f"Total number of referees {total_referees}. TraceID: {trace_id}")
