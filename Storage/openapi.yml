@@ -18,7 +18,14 @@ paths:
       description: 
         Search for referee's classification
       parameters:
-        - name: timestamp 
+        - name: start_timestamp 
+          in: query 
+          description: Limits the number of items on a page 
+          schema: 
+            type: string 
+            format: date-time 
+            example: "2022-02-02 20:41:17.979133"
+        - name: end_timestamp 
           in: query 
           description: Limits the number of items on a page 
           schema: 
@@ -46,7 +53,14 @@ paths:
         description: 
           Search for number of fans attending game
         parameters:
-          - name: timestamp 
+          - name: start_timestamp 
+            in: query 
+            description: Search for a specific time 
+            schema: 
+              type: string 
+              format: date-time 
+              example: "2022-02-02 20:41:17.979133"
+          - name: end_timestamp 
             in: query 
             description: Search for a specific time 
             schema: 
@@ -74,7 +88,14 @@ paths:
         description: 
           Search for referee years of experience
         parameters:
-          - name: timestamp 
+          - name: start_timestamp 
+            in: query 
+            description: Limits the number of items on a page
+            schema: 
+              type: string 
+              format: date-time 
+              example: "2022-02-02 20:41:17.979133"
+          - name: end_timestamp 
             in: query 
             description: Limits the number of items on a page
             schema: 
