@@ -75,7 +75,7 @@ def searchClassification(start_timestamp, end_timestamp):
  
     session.close() 
      
-    logger.info("Query for referee classification after %s returns %d results" % (start_timestamp, end_timestamp, len(results_list))) 
+    logger.info("Query for referee classification after %s returns %d results" % (start_timestamp, len(results_list))) 
     
     # logger.info(f"Connecting to DB. Hostname:{hostname}, Port:{port}")
     return results_list, 200
@@ -98,7 +98,7 @@ def searchFans(start_timestamp, end_timestamp):
  
     session.close() 
      
-    logger.info("Query for number of fans after %s returns %d results" % (start_timestamp, end_timestamp, len(results_list))) 
+    logger.info("Query for number of fans after %s returns %d results" % (start_timestamp, len(results_list))) 
     
     # logger.info(f"Connecting to DB. Hostname:{hostname}, Port:{port}")
     return results_list, 200
@@ -120,7 +120,7 @@ def searchExperience(start_timestamp, end_timestamp):
  
     session.close() 
      
-    logger.info("Query for referee's experience level after %s returns %d results" % (start_timestamp, end_timestamp, len(results_list))) 
+    logger.info("Query for referee's experience level after %s returns %d results" % (start_timestamp, len(results_list))) 
     
     # logger.info(f"Connecting to DB. Hostname:{hostname}, Port:{port}")
     return results_list, 200
