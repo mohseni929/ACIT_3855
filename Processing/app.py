@@ -67,9 +67,9 @@ def populate_stats():
         results = {'num_of_referees': 0, 'num_of_experience': 0, 'num_of_fans': 0, 'num_of_fields': 0, 'num_of_class': 0, 'last_updated': '0001-01-01 01:01:01'}
     
     
-    response1 = requests.get(f"{app_config['eventstore']['url']}/availability/schedule",params={'timestamp': results['last_updated']})
-    response2 = requests.get(f"{app_config['eventstore']['url']}/availability/game",params={'timestamp': results['last_updated']})
-    response3 = requests.get(f"{app_config['eventstore']['url']}/availability/referee",params={'timestamp': results['last_updated']})
+    response1 = requests.get(f"{app_config['eventstore']['url']}/availability/schedule",params={'start_timestamp': results['last_updated'],'end_timestamp':datetime.now()})
+    response2 = requests.get(f"{app_config['eventstore']['url']}/availability/game",params={'start_timestamp': results['last_updated'],'end_timestamp':datetime.now()})
+    response3 = requests.get(f"{app_config['eventstore']['url']}/availability/referee",params={'start_timestamp': results['last_updated'],'end_timestamp':datetime.now()})
 
     print(f'\n\n{response1,response2,response3}\n\n')
 
@@ -86,9 +86,6 @@ def populate_stats():
 
         trace_id = str(uuid1())
 
-        print(classes)
-        print(refs)
-        print(exp)
 
         total_fields = len(exp)
         total_referees = sum([x['Number_of_referees'] for x in refs]) + int(results["num_of_referees"])
