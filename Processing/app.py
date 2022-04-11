@@ -8,7 +8,6 @@ from base import Base
 from sqlalchemy import create_engine
 from flask_cors import CORS, cross_origin
 from sqlalchemy.orm import sessionmaker
-from health.app import check_data
 from stats import Stats
 from datetime import datetime
 from uuid import uuid1
