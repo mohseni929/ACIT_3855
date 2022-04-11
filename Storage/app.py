@@ -16,7 +16,7 @@ from pykafka.common import OffsetType
 from threading import Thread
 from sqlalchemy import and_
 import time
-
+import os
 
 # with open('app_conf.yml', 'r') as f:
 #     app_conf = yaml.safe_load(f.read())

@@ -12,6 +12,7 @@ from threading import Thread
 import json
 from base import Base
 from flask_cors import CORS, cross_origin
+import os
 
 # with open('log_conf.yml', 'r') as f:
 #     log_config = yaml.safe_load(f.read())

@@ -11,6 +11,7 @@ from sqlalchemy.orm import sessionmaker
 from stats import Stats
 from datetime import datetime
 from uuid import uuid1
+import os
 
 #Configurable Variables
 max_events = 10
