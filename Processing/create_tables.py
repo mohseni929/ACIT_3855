@@ -4,7 +4,7 @@ def create_database():
     conn = sqlite3.connect('/data/data.sqlite')
     c = conn.cursor() 
     c.execute(''' 
-            CREATE TABLE stats 
+            CREATE TABLE IF NOT EXISTS stats 
             (id INTEGER PRIMARY KEY ASC,  
             num_of_referees INTEGER NOT NULL, 
             num_of_experience INTEGER NOT NULL, 
