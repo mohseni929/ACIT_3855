@@ -49,6 +49,7 @@ services:
       # Where our data will be persisted 
     volumes:
       - my-db:/var/lib/mysql
+      
   reciever:
     build: ../Reciever
     environment:
@@ -62,6 +63,7 @@ services:
       - "8080"
     networks:
       - "api.network"
+
   storage:
     build: ../Storage
     environment:
@@ -76,22 +78,22 @@ services:
     depends_on:
       - db
       - kafka
+
   processing:
     build: ../Processing
+    environment:
+      - TARGET_ENV=test
+    volumes:
+      - /home/azureuser/config/processing:/config
+      - /home/azureuser/logs:/logs
+      - processing-db:/data
     ports:
       - "8100"
     networks:
       - "api.network"
-    environment:
-      - TARGET_ENV=test
-    network_mode: "host"
     depends_on:
       - storage
-    volumes:
-      # - my-db:/var/lib/sqlite
-      - /home/azureuser/config/processing:/config
-      - /home/azureuser/logs:/logs
-      - processing-db:/data
+
   audit_log:
     build: ../audit_log
     environment:
@@ -105,6 +107,7 @@ services:
       - "api.network"
     depends_on:
       - kafka
+
   dashboard-ui:
     build: ../dashboard-UI
     ports:
@@ -129,7 +132,7 @@ services:
     - "80:80"
     networks:
     - "api.network"
-#Names our volume 
+
 volumes:
   my-db:
   processing-db:
