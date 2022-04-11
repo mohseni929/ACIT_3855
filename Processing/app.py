@@ -12,7 +12,7 @@ from stats import Stats
 from datetime import datetime
 from uuid import uuid1
 import os
-from create_table import create_database
+from create_tables import create_database
 
 #Configurable Variables
 max_events = 10
