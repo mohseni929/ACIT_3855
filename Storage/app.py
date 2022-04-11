@@ -54,7 +54,10 @@ with open(log_conf_file, 'r') as f:
 logger = logging.getLogger('audit')
 logger.info("App Conf File: %s" % app_conf_file) 
 logger.info("Log Conf File: %s" % log_conf_file)
-    
+
+def get_health():
+    return 200
+
 host_name = "%s:%d" % (app_conf["events"]["hostname"], app_conf["events"]["port"])
 max_retry = app_conf["events"]["retry"]
 retry = 0

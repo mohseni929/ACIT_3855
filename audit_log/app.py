@@ -125,6 +125,9 @@ def searchExperience(index):
     logger.error("Could not find available stadium at index %d" % index) 
     return { "message": "Not Found"}, 404
 
+def get_health():
+    return 200
+
 app = connexion.FlaskApp(__name__, specification_dir='./')
 if "TARGET_ENV" not in os.environ or os.environ["TARGET_ENV"] != "test":
     CORS(app.app)
@@ -132,4 +135,6 @@ if "TARGET_ENV" not in os.environ or os.environ["TARGET_ENV"] != "test":
 app.add_api("openapi.yaml", base_path="/audit_log", strict_validation=True, validate_responses=True)
 
 if __name__ == "__main__":
+    get_health()
+    
     app.run(port=8110)

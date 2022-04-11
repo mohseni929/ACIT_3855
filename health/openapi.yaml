@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  description: This API receives hardware status reading from Crypto mining rig
+  version: "1.0.0"
+  title: Mining rig API
+  contact:
+    email: dgao12@my.bcit.ca
+paths:
+  /status:
+    get:
+      summary: Gets health status
+      operationId: app.get_health
+      description: Gets all service status
+      responses:
+        '200':
+          description: Successfully returned a list of health status
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/health'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+components:
+  schemas:
+    health:
+      required:
+        - receiver
+        - storage
+        - processing
+        - audit_log
+        - last_updated
+      properties:
+        receiver:
+          type: string
+          example: down
+        storage:
+          type: string
+          example: running
+        processing:
+          type: string
+          example: running
+        audit_log:
+          type: string
+          example: running
+        last_updated:
+          type: string
+          example: '2016-08-29T09:12:33Z'
+      type: object

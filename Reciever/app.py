@@ -71,6 +71,9 @@ while retry < max_retry:
         retry += 1
         logger.info("retry in 10 second")
 
+def get_health():
+    return 200
+
 def available_games(body):
     """add a new available game """
     trace_id = str(uuid1())
