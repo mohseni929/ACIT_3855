@@ -109,17 +109,17 @@ services:
       - kafka
   
   health:
-  build: ../health
-  environment:
-    - TARGET_ENV=test
-  ports:
-    - "8120"
-  networks:
-    - "api.network"
-  volumes:
-    - /home/azureuser/config/health:/config
-    - /home/azureuser/logs:/logs
-    - health-db:/data
+    build: ../health
+    environment:
+      - TARGET_ENV=test
+    ports:
+      - "8120"
+    networks:
+      - "api.network"
+    volumes:
+      - /home/azureuser/config/health:/config
+      - /home/azureuser/logs:/logs
+      - health-db:/data
 
   dashboard-ui:
     build: ../dashboard-UI
