@@ -17,20 +17,43 @@ header = {'Content-Type': 'application/json'}
 
 
 
-with open('app_conf.yml', 'r') as f: 
+# with open('app_conf.yml', 'r') as f: 
+#     app_config = yaml.safe_load(f.read())
+#     scheduler = app_config['eventstore1']['url']
+#     game = app_config['eventstore2']['url']
+#     referee = app_config['eventstore3']['url']
+#     # client = KafkaClient(hosts='acit3855lab.westus.cloudapp.azure.com:9092') 
+#     # topic = client.topics[str.encode(app_config['events']['topic'])] 
+#     # producer = topic.get_sync_producer()
+
+# with open('log_conf.yml', 'r') as f: 
+#     log_config = yaml.safe_load(f.read()) 
+#     logging.config.dictConfig(log_config) 
+#     logger = logging.getLogger('basicLogger')
+#     logger.info("Test")
+
+if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+    print("In Test Environment")
+    app_conf_file = "/config/app_conf.yml"
+    log_conf_file = "/config/log_conf.yml"
+else:
+    print("In Dev Environment")
+    app_conf_file = "app_conf.yml"
+    log_conf_file = "log_conf.yml"
+with open(app_conf_file, 'r') as f:
     app_config = yaml.safe_load(f.read())
     scheduler = app_config['eventstore1']['url']
     game = app_config['eventstore2']['url']
     referee = app_config['eventstore3']['url']
-    # client = KafkaClient(hosts='acit3855lab.westus.cloudapp.azure.com:9092') 
-    # topic = client.topics[str.encode(app_config['events']['topic'])] 
-    # producer = topic.get_sync_producer()
-
-with open('log_conf.yml', 'r') as f: 
-    log_config = yaml.safe_load(f.read()) 
-    logging.config.dictConfig(log_config) 
+# External Logging Configuration
+with open(log_conf_file, 'r') as f:
+    log_config = yaml.safe_load(f.read())
+    logging.config.dictConfig(log_config)
     logger = logging.getLogger('basicLogger')
     logger.info("Test")
+logger = logging.getLogger('audit')
+logger.info("App Conf File: %s" % app_conf_file) 
+logger.info("Log Conf File: %s" % log_conf_file)
     
 host_name = "%s:%d" % (app_config["events"]["hostname"], app_config["events"]["port"])
 max_retry = app_config["events"]["retry"]

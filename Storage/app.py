@@ -18,18 +18,42 @@ from sqlalchemy import and_
 import time
 
 
-with open('app_conf.yml', 'r') as f:
+# with open('app_conf.yml', 'r') as f:
+#     app_conf = yaml.safe_load(f.read())
+#     user = app_conf['datastore']['user']
+#     password = app_conf['datastore']['password']
+#     hostname = app_conf['datastore']['hostname']
+#     port = app_conf['datastore']['port']
+#     db = app_conf['datastore']['db']
+
+# with open('log_conf.yml', 'r') as f: 
+#     log_config = yaml.safe_load(f.read()) 
+#     logging.config.dictConfig(log_config)
+#     logger = logging.getLogger('basicLogger')
+
+if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+    print("In Test Environment")
+    app_conf_file = "/config/app_conf.yml"
+    log_conf_file = "/config/log_conf.yml"
+else:
+    print("In Dev Environment")
+    app_conf_file = "app_conf.yml"
+    log_conf_file = "log_conf.yml"
+with open(app_conf_file, 'r') as f:
     app_conf = yaml.safe_load(f.read())
     user = app_conf['datastore']['user']
     password = app_conf['datastore']['password']
     hostname = app_conf['datastore']['hostname']
     port = app_conf['datastore']['port']
     db = app_conf['datastore']['db']
-
-with open('log_conf.yml', 'r') as f: 
-    log_config = yaml.safe_load(f.read()) 
+# External Logging Configuration
+with open(log_conf_file, 'r') as f:
+    log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
     logger = logging.getLogger('basicLogger')
+logger = logging.getLogger('audit')
+logger.info("App Conf File: %s" % app_conf_file) 
+logger.info("Log Conf File: %s" % log_conf_file)
     
 host_name = "%s:%d" % (app_conf["events"]["hostname"], app_conf["events"]["port"])
 max_retry = app_conf["events"]["retry"]
