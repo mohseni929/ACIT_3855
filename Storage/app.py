@@ -41,6 +41,11 @@ else:
     log_conf_file = "log_conf.yml"
 with open(app_conf_file, 'r') as f:
     app_conf = yaml.safe_load(f.read())
+    user = app_conf['datastore']['user']
+    password = app_conf['datastore']['password']
+    hostname = app_conf['datastore']['hostname']
+    port = app_conf['datastore']['port']
+    db = app_conf['datastore']['db']
 # External Logging Configuration
 with open(log_conf_file, 'r') as f:
     log_config = yaml.safe_load(f.read())
