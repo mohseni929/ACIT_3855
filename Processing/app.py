@@ -12,6 +12,7 @@ from stats import Stats
 from datetime import datetime
 from uuid import uuid1
 import os
+from create_table import create_database
 
 #Configurable Variables
 max_events = 10
@@ -45,6 +46,16 @@ with open(log_conf_file, 'r') as f:
 logger = logging.getLogger('audit')
 logger.info("App Conf File: %s" % app_conf_file) 
 logger.info("Log Conf File: %s" % log_conf_file)
+
+def check_data():
+    file_exists = os.path.exists(f'{app_config["datastore"]["filename"]}')
+    if file_exists:
+        logger.info(f'log path is {app_config["datastore"]["filename"]}')
+        logger.info("data.sqlite is exist")
+    else:
+        logger.info("data.sqlite is not exist")
+        create_database()
+        logger.info("create data.sqlite")
 
 DB_ENGINE = create_engine("sqlite:///%s" % app_config["datastore"]["filename"]) 
 Base.metadata.bind = DB_ENGINE 
