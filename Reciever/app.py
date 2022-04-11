@@ -120,7 +120,7 @@ def referee_available(body):
 
 
 app = connexion.FlaskApp(__name__, specification_dir='',)    # Flask app to run the file
-app.add_api("openapi.yml", strict_validation = True, validate_responses = True)   # Add the yml file with validation
+app.add_api("openapi.yml", base_path="/reciever", strict_validation = True, validate_responses = True)   # Add the yml file with validation
  
 if __name__ == "__main__":   # Run program
     app.run(port=8080, debug=True)
