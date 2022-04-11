@@ -79,7 +79,7 @@ services:
   processing:
     build: ../Processing
     ports:
-      -"8100"
+      - "8100"
     networks:
       - "api.network"
     environment:
