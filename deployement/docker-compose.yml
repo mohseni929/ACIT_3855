@@ -80,9 +80,10 @@ services:
     depends_on:
       - storage
     volumes:
-      - my-db:/var/lib/sqlite
+      # - my-db:/var/lib/sqlite
       - /home/azureuser/config/processing:/config
       - /home/azureuser/logs:/logs
+      - processing-db:/data
   audit_log:
     build: ../audit_log
     environment:
@@ -104,3 +105,4 @@ services:
 #Names our volume 
 volumes:
   my-db:
+  processing-db:
