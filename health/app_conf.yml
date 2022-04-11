@@ -6,7 +6,7 @@ datastore:
 response:
   period_sec: 5
 eventurl:
-  receiver: http://acit3855lab.westus3.cloudapp.azure.com/receiver
+  receiver: http://acit3855lab.westus3.cloudapp.azure.com/reciever
   storage: http://acit3855lab.westus3.cloudapp.azure.com/storage
   processing: http://acit3855lab.westus3.cloudapp.azure.com/processing
   audit_log: http://acit3855lab.westus3.cloudapp.azure.com/audit_log

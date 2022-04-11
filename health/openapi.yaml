@@ -1,10 +1,10 @@
 openapi: 3.0.0
 info:
-  description: This API receives hardware status reading from Crypto mining rig
+  description: referee schedule api
   version: "1.0.0"
-  title: Mining rig API
+  title: referee scheduler API
   contact:
-    email: dgao12@my.bcit.ca
+    email: smohseni5@my.bcit.ca
 paths:
   /status:
     get:
@@ -33,7 +33,7 @@ components:
   schemas:
     health:
       required:
-        - receiver
+        - reciever
         - storage
         - processing
         - audit_log

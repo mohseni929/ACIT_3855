@@ -76,7 +76,7 @@ def populate_health():
     default= "Sorry, I am dead (>.<)!"
     if not health:
         health = {
-            "receiver": default,
+            "reciever": default,
             "storage": default,
             "processing": default,
             "audit_log": default,
@@ -86,7 +86,7 @@ def populate_health():
         health = health.to_dict()
 
     new_health = {
-        "receiver": default,
+        "reciever": default,
         "storage": default,
         "processing": default,
         "audit_log": default,
@@ -105,7 +105,7 @@ def populate_health():
 
 
     add_health = Health(
-        new_health["receiver"],
+        new_health["reciever"],
         new_health["storage"],
         new_health["processing"],
         new_health["audit_log"],

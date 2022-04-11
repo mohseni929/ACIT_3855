@@ -7,17 +7,17 @@ class Health(Base):
     """ Processing Statistics """
     __tablename__ = "health"
     id = Column(Integer, primary_key=True)
-    receiver = Column(String(250), nullable=False)
+    reciever = Column(String(250), nullable=False)
     storage = Column(String(250), nullable=False)
     processing = Column(String(250), nullable=False)
     audit_log = Column(String(250), nullable=True)
     last_updated = Column(DateTime, nullable=False)
 
-    def __init__(self, receiver, storage,
+    def __init__(self, reciever, storage,
                  processing, audit_log,
                  last_updated):
         """ Initializes a processing statistics objet """
-        self.receiver = receiver
+        self.reciever = reciever
         self.storage = storage
         self.processing = processing
         self.audit_log = audit_log
@@ -26,7 +26,7 @@ class Health(Base):
     def to_dict(self):
         """ Dictionary Representation of a statistics """
         dict = {}
-        dict['receiver'] = self.receiver
+        dict['reciever'] = self.reciever
         dict['storage'] = self.storage
         dict['processing'] = self.processing
         dict['audit_log'] = self.audit_log

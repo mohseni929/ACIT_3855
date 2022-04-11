@@ -6,7 +6,7 @@ def create_database():
     c.execute('''
         CREATE TABLE health
         (id INTEGER PRIMARY KEY ASC,
-        receiver VARCHAR(100) NOT NULL,
+        reciever VARCHAR(100) NOT NULL,
         storage VARCHAR(100) NOT NULL,
         processing VARCHAR(100) NOT NULL,
         audit_log VARCHAR(100) NOT NULL,
