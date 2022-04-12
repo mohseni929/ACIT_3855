@@ -95,12 +95,12 @@ def populate_health():
 
     for service in app_config["eventurl"]:
         maxtime = app_config["response"]['period_sec']
-        health = requests.get(app_config["eventurl"][f"{service}"] + "/health", timeout=maxtime)
+        health = requests.get(f"{app_config['eventurl']['service']}/health", timeout=maxtime)
         if health.status_code != 200:
-            logger.error(f'{service} down ')
+            logger.error(f'{service} not running ')
         else:
             logger.info(f'{service} running ')
-            new_health[f"{service}"] = 'I feel so good (^.^)!'
+            new_health[f"{service}"] = 'great (^.^)!'
 
 
     add_health = Health(
