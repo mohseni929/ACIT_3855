@@ -39,7 +39,7 @@ components:
         - audit_log
         - last_updated
       properties:
-        receiver:
+        reciever:
           type: string
           example: down
         storage:
