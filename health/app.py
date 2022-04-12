@@ -56,7 +56,7 @@ DB_SESSION = sessionmaker(bind=DB_ENGINE)
 def get_health():
     """ Gets service health """
     session = DB_SESSION()
-    logger.info("Start Get health request")
+    logger.info("Start Get Health request")
     health = session.query(Health).order_by(Health.last_updated.desc()).first()
     if not health:
         logger.debug(f'No latest statistics found')
@@ -73,7 +73,7 @@ def populate_health():
     logger.info("Start Periodic Health")
     session = DB_SESSION()
     health = session.query(Health).order_by(Health.last_updated.desc()).first()
-    default= "Sorry, I am dead (>.<)!"
+    default= "Sorry, not working!"
     if not health:
         health = {
             "reciever": default,
