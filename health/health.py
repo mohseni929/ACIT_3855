@@ -13,9 +13,7 @@ class Health(Base):
     audit_log = Column(String(250), nullable=True)
     last_updated = Column(DateTime, nullable=False)
 
-    def __init__(self, reciever, storage,
-                 processing, audit_log,
-                 last_updated):
+    def __init__(self, reciever, storage, processing, audit_log, last_updated):
         """ Initializes a processing statistics objet """
         self.reciever = reciever
         self.storage = storage
