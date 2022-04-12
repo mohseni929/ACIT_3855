@@ -43,7 +43,7 @@ export default function HealthStatus() {
                 <tbody>
                     <tr>
                         <td>Reciever:</td>
-                        <td>{stats['receiver']}</td>
+                        <td>{stats['reciever']}</td>
                     </tr>
                     <tr>
                         <td>storage:</td>
