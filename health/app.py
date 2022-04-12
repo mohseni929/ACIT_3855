@@ -68,6 +68,7 @@ def get_health():
     return health, 200
 
 
+
 def populate_health():
     """ Periodically update health """
     logger.info("Start Periodic Health")
@@ -94,29 +95,30 @@ def populate_health():
     }
 
     for service in app_config["eventurl"]:
-        maxtime = app_config["response"]['period_sec']
-        health = requests.get(f"{app_config['eventurl'][service]}/health", timeout=maxtime)
-        if health.status_code != 200:
-            logger.error(f'{service} not running ')
-        else:
-            logger.info(f'{service} running ')
-            new_health[f'{service}'] = 'great (^.^)!'
+        logger.info(f"{app_config['event_url'][service]}/health")
+        # maxtime = app_config["response"]['period_sec']
+        # health = requests.get(f"{app_config['eventurl'][service]}/health", timeout=maxtime)
+        # if health.status_code != 200:
+        #     logger.error(f'{service} not running ')
+        # else:
+        #     logger.info(f'{service} running ')
+        #     new_health[f'{service}'] = 'great (^.^)!'
 
 
-    add_health = Health(
-        new_health["reciever"],
-        new_health["storage"],
-        new_health["processing"],
-        new_health["audit_log"],
-        new_health["last_updated"]
-    )
-    session.add(add_health)
-    session.commit()
-    session.close()
+    # add_health = Health(
+    #     new_health["reciever"],
+    #     new_health["storage"],
+    #     new_health["processing"],
+    #     new_health["audit_log"],
+    #     new_health["last_updated"]
+    # )
+    # session.add(add_health)
+    # session.commit()
+    # session.close()
 
-    logger.debug(
-        f'The new processed statistics is {new_health}')
-    logger.info("Periodic Health Ends")
+    # logger.debug(
+    #     f'The new processed statistics is {new_health}')
+    # logger.info("Periodic Health Ends")
 
 
 def init_scheduler():
