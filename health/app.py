@@ -96,7 +96,7 @@ def populate_health():
     for service in app_config["eventurl"]:
         logger.info(service)
         maxtime = app_config["response"]['period_sec']
-        health = requests.get("http://acit3855lab.westus3.cloudapp.azure.com/" + f"{service}" + "/health", timeout=maxtime)
+        health = requests.get(f"{service}" + "/health", timeout=maxtime)
         if health.status_code != 200:
             logger.error(f'{service} down ')
         else:
