@@ -9,7 +9,7 @@ export default function AppStats() {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const getStats = () => {
 	
-        fetch(`http://acit3855lab.westus.cloudapp.azure.com:8100/stats`)
+        fetch(`http://acit3855lab.westus.cloudapp.azure.com/processing/stats`)
             .then(res => res.json())
             .then((result)=>{
 				console.log("Received Stats")
