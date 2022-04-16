@@ -97,7 +97,7 @@ def populate_health():
         health["storage"],
         health["processing"],
         health["audit_log"],
-        health["last_updated"]
+        datetime.datetime.now()
     )
     session.add(add_health)
     session.commit()
