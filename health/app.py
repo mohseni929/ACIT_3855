@@ -43,9 +43,9 @@ def check_data():
         logger.info(f'log path is {app_config["datastore"]["filename"]}')
         logger.info("health.sqlite is exist")
     else:
-        logger.info("health.sqlite is not exist")
+        logger.info("HEALTH.SQLITE IS NOT CREATED")
         create_database()
-        logger.info("create health.sqlite")
+        logger.info("CREATE HEALTH.SQLITE")
 
  
 DB_ENGINE = create_engine("sqlite:///%s" % app_config["datastore"]["filename"])
@@ -57,17 +57,12 @@ def get_health():
     """ Gets service health """
     session = DB_SESSION()
     logger.info("Start Get Health request")
-    health = session.query(Health).order_by(Health.last_updated.desc()).first()
-    if not health:
-        logger.debug(f'No latest statistics found')
+    try:
+        health = session.query(Health).order_by(Health.last_updated.desc()).first()
+        session.close()
+        return health.to_dict(), 200
+    except:
         return "Statistics do not exist", 404
-    health = health.to_dict()
-    session.close()
-    logger.debug(f'The latest statistics is {health}')
-    logger.info("Get Health request done")
-    return health, 200
-
-
 
 def populate_health():
     """ Periodically update health """
