@@ -84,7 +84,7 @@ def populate_health():
 
     for service in ['storage', 'reciever', 'processing', 'audit_log']:
         maxtime = app_config["response"]['period_sec']
-        request_health = requests.get(f"http://acit3855lab.westus3.cloudapp.azure.com/{service}/health", timeout=maxtime)
+        request_health = requests.get(f"http://acit3855lab.westus.cloudapp.azure.com/{service}/health", timeout=maxtime)
         if request_health.status_code != 200:
             logger.error(f'{service} not running ')
         else:
