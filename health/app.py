@@ -73,52 +73,45 @@ def populate_health():
     """ Periodically update health """
     logger.info("Start Periodic Health")
     session = DB_SESSION()
-    health = session.query(Health).order_by(Health.last_updated.desc()).first()
-    default= "Sorry, not working!"
-    if not health:
-        health = {
-            "reciever": default,
-            "storage": default,
-            "processing": default,
-            "audit_log": default,
-            "last_updated": datetime.datetime.now()
-        }
-    if not isinstance(health, dict):
+    try:
+        health = session.query(Health).order_by(Health.last_updated.desc()).first()
         health = health.to_dict()
-
-    new_health = {
-        "reciever": default,
-        "storage": default,
-        "processing": default,
-        "audit_log": default,
-        "last_updated": datetime.datetime.now()
-    }
+    
+    except:
+        default= "Sorry, not working!"
+        health = {
+                "reciever": default,
+                "storage": default,
+                "processing": default,
+                "audit_log": default,
+                "last_updated": datetime.datetime.now()
+            }
 
     for service in app_config["eventurl"]:
         logger.info(f"{app_config['eventurl'][service]}/health")
-        # maxtime = app_config["response"]['period_sec']
-        # health = requests.get(f"{app_config['eventurl'][service]}/health", timeout=maxtime)
-        # if health.status_code != 200:
-        #     logger.error(f'{service} not running ')
-        # else:
-        #     logger.info(f'{service} running ')
-        #     new_health[f'{service}'] = 'great (^.^)!'
+        maxtime = app_config["response"]['period_sec']
+        request_health = requests.get(f"{app_config['eventurl'][service]}/health", timeout=maxtime)
+        if request_health.status_code != 200:
+            logger.error(f'{service} not running ')
+        else:
+            logger.info(f'{service} running ')
+            health[f'{service}'] = 'great (^.^)!'
 
 
-    # add_health = Health(
-    #     new_health["reciever"],
-    #     new_health["storage"],
-    #     new_health["processing"],
-    #     new_health["audit_log"],
-    #     new_health["last_updated"]
-    # )
-    # session.add(add_health)
-    # session.commit()
-    # session.close()
+    add_health = Health(
+        health["reciever"],
+        health["storage"],
+        health["processing"],
+        health["audit_log"],
+        health["last_updated"]
+    )
+    session.add(add_health)
+    session.commit()
+    session.close()
 
-    # logger.debug(
-    #     f'The new processed statistics is {new_health}')
-    # logger.info("Periodic Health Ends")
+    logger.debug(
+        f'The new processed statistics is {health}')
+    logger.info("Periodic Health Ends")
 
 
 def init_scheduler():

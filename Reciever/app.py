@@ -72,7 +72,8 @@ while retry < max_retry:
         logger.info("retry in 10 second")
 
 def get_health():
-    return 200
+    return NoContent, 200
+
 
 def available_games(body):
     """add a new available game """
